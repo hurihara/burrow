@@ -1,65 +1,42 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: '#C3C4D8',
+      fontFamily: 'sans-serif'
+    }}>
+      <div style={{
+        background: '#FCFAEA',
+        borderRadius: '12px',
+        padding: '2rem',
+        width: '100%',
+        maxWidth: '360px',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.08)'
+      }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+          <div style={{ fontSize: '22px', fontWeight: 500, color: '#7C7A86' }}>Burrow</div>
+          <div style={{ fontSize: '13px', color: '#A8A6B0', marginTop: '3px' }}>2人だけの秘密基地</div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div style={{ display: 'flex', gap: '4px', marginBottom: '1rem' }}>
+          <button style={{ flex: 1, padding: '6px', background: '#FCFAEA', border: '0.5px solid #8A7DB3', borderRadius: '6px', color: '#8A7DB3', cursor: 'pointer' }}>ログイン</button>
+          <button style={{ flex: 1, padding: '6px', background: 'transparent', border: '0.5px solid #C0BEC8', borderRadius: '6px', color: '#A8A6B0', cursor: 'pointer' }}>新規登録</button>
         </div>
-      </main>
-    </div>
-  );
+        <div style={{ marginBottom: '12px' }}>
+          <div style={{ fontSize: '12px', color: '#A8A6B0', marginBottom: '5px' }}>メールアドレス</div>
+          <input type="email" placeholder="example@mail.com" style={{ width: '100%', padding: '8px 10px', border: '0.5px solid #C0BEC8', borderRadius: '8px', background: '#fff', color: '#7C7A86', outline: 'none', boxSizing: 'border-box' }} />
+        </div>
+        <div style={{ marginBottom: '12px' }}>
+          <div style={{ fontSize: '12px', color: '#A8A6B0', marginBottom: '5px' }}>パスワード</div>
+          <input type="password" placeholder="••••••••" style={{ width: '100%', padding: '8px 10px', border: '0.5px solid #C0BEC8', borderRadius: '8px', background: '#fff', color: '#7C7A86', outline: 'none', boxSizing: 'border-box' }} />
+        </div>
+        <button style={{ width: '100%', padding: '9px', background: '#8A7DB3', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px' }}>ログイン</button>
+        <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '12px', color: '#A8A6B0' }}>
+          パスワードを忘れた場合は<span style={{ color: '#8A7DB3', cursor: 'pointer' }}>こちら</span>
+        </div>
+      </div>
+    </main>
+  )
 }
