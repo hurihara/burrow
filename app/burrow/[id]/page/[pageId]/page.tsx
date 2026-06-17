@@ -6,6 +6,24 @@ import { auth, db } from '../../../../../lib/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc, updateDoc, collection, addDoc, getDocs, query, orderBy } from 'firebase/firestore'
 
+const TOPICS = [
+  '最近ハマってることは？',
+  '今日の気分を一言で表すと？',
+  '最近見たアニメ・映画は？',
+  '今一番欲しいものは？',
+  '最近笑ったことは？',
+  '好きな食べ物ベスト3は？',
+  '最近あった嬉しいことは？',
+  '今の推しを教えて！',
+  '最近聴いてる曲は？',
+  'もし明日休みだったら何する？',
+  '最近買ってよかったものは？',
+  '子供の頃の夢は何だった？',
+  '得意なことと苦手なことは？',
+  '最近気になってることは？',
+  '今いちばん楽しみにしてることは？',
+]
+
 type Comment = {
   id: string
   text: string
@@ -25,8 +43,10 @@ export default function PageView() {
   const [comments, setComments] = useState<Comment[]>([])
   const [myName, setMyName] = useState('')
   const [saved, setSaved] = useState(false)
+  const [topic, setTopic] = useState('')
 
   useEffect(() => {
+    setTopic(TOPICS[Math.floor(Math.random() * TOPICS.length)])
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) { router.push('/'); return }
       const userSnap = await getDoc(doc(db, 'users', user.uid))
@@ -68,6 +88,10 @@ export default function PageView() {
     setComment('')
   }
 
+  const refreshTopic = () => {
+    setTopic(TOPICS[Math.floor(Math.random() * TOPICS.length)])
+  }
+
   if (!pageData) return <main style={{ minHeight: '100vh', background: '#C3C4D8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ color: '#A8A6B0' }}>読み込み中…</div></main>
 
   return (
@@ -77,6 +101,12 @@ export default function PageView() {
           <button onClick={() => router.push(`/burrow/${burrowId}`)} style={{ background: 'none', border: 'none', color: '#8A7DB3', cursor: 'pointer', fontSize: '14px' }}>← 戻る</button>
           <div style={{ fontSize: '16px', fontWeight: 500, color: '#7C7A86' }}>{pageData.title}</div>
         </div>
+        {pageData.type === 'diary' && (
+          <div style={{ background: '#8A7DB3', borderRadius: '12px', padding: '12px 16px', marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ color: '#fff', fontSize: '14px', flex: 1 }}>📝 {topic}</div>
+            <button onClick={refreshTopic} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '99px', color: '#fff', padding: '4px 10px', fontSize: '12px', cursor: 'pointer', flexShrink: 0 }}>別のお題</button>
+          </div>
+        )}
         <div style={{ background: '#FCFAEA', borderRadius: '12px', padding: '1.25rem', marginBottom: '12px' }}>
           <textarea
             value={content}
