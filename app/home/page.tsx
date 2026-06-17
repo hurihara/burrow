@@ -6,6 +6,8 @@ import { auth, db } from '../../lib/firebase'
 import { signOut, onAuthStateChanged } from 'firebase/auth'
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore'
 import { addDoc } from 'firebase/firestore'
+import { requestNotificationPermission } from '../../lib/firebase'
+import { doc, setDoc } from 'firebase/firestore'
 
 type Burrow = {
   id: string
@@ -19,6 +21,11 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const token = await requestNotificationPermission()
+if (token && user) {
+  await setDoc(doc(db, 'users', user.uid), { fcmToken: token }, { merge: true })
+}
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
         router.push('/')
