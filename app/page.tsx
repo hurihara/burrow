@@ -25,7 +25,7 @@ export default function Home() {
   const handleSignup = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password)
-      router.push('/home')
+      router.push('/profile-setup')
     } catch (e) {
       setError('もう一度試してください')
     }
