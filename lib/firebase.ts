@@ -24,7 +24,7 @@ export const requestNotificationPermission = async () => {
     const permission = await Notification.requestPermission()
     if (permission === 'granted') {
       const token = await getToken(messaging, {
-        vapidKey: 'ここに鍵を貼り付けて'
+        vapidKey: 'BAJPXuMDNPF_v56Iz2YkOXqEo5UEeq5pT8UN6ZqQANrpXYeDQ9TnB-XzQ1gCNVu1KDV_IL8otO1vbC2TszIg1Gw'
       })
       return token
     }
