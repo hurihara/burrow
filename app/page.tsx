@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { auth } from '../lib/firebase'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
@@ -10,22 +11,23 @@ export default function Home() {
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+  const router = useRouter()
 
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password)
-      alert('ログインできたよ！')
+      router.push('/home')
     } catch (e) {
-      setError('メールアドレスかパスワードが違うよ')
+      setError('メールアドレスかパスワードが違います')
     }
   }
 
   const handleSignup = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password)
-      alert('アカウント作れたよ！')
+      router.push('/home')
     } catch (e) {
-      setError('もう一度試してみて')
+      setError('もう一度試してください')
     }
   }
 
