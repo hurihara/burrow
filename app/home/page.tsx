@@ -45,6 +45,16 @@ export default function HomePage() {
     router.push('/')
   }
 
+  const requestNotification = async () => {
+  if ('Notification' in window) {
+    await Notification.requestPermission()
+  }
+}
+
+useEffect(() => {
+  requestNotification()
+}, [])
+
   const handleInvite = async () => {
     const user = auth.currentUser
     if (!user) return
