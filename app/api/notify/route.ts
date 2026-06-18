@@ -23,16 +23,12 @@ export async function POST(req: NextRequest) {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
+body: JSON.stringify({
   message: {
     token,
-    data: {
-      title,
-      body,
-    },
+    notification: { title, body },
   },
-}),
-    }
+}),    }
   )
 
   const data = await res.json()
