@@ -19,14 +19,42 @@ export default function HomePage() {
   const [burrows, setBurrows] = useState<Burrow[]>([])
   const [loading, setLoading] = useState(true)
 
- try {
-  const token = await requestNotificationPermission()
-  if (token) {
-    await setDoc(doc(db, 'users', user.uid), { fcmToken: token }, { merge: true })
-  }
-} catch (e) {
-  console.log('通知設定スキップ')
-}
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        router.push('/')
+        return
+      }
+      try {
+        const token = await requestNotificationPermission()
+        if (token) {
+          await setDoc(doc(db, 'users', user.uid), { fcmToken: token }, { merge: true })
+        }
+      } catch (e) {
+        console.log('通知設定スキップ')
+      }
+      const q = query(collection(db, 'burrows'), where('members', 'array-contains', user.uid))
+      const snap = await getDocs(q)
+      const list: Burrow[] = []
+      for (const d of snap.docs) {
+        const data = d.data()
+        const partnerId = data.members.find((m: string) => m !== user.uid)
+        const partnerSnap = await getDoc(doc(db, 'users', partnerId))
+        const partnerData = partnerSnap.exists() ? partnerSnap.data() : {}
+        list.push({
+          id: d.id,
+          partnerId,
+          partnerName: partnerData.name || '名無し',
+          partnerAvatar: partnerData.avatar || partnerData.name?.[0] || '?',
+          partnerAvatarType: partnerData.avatarType || 'emoji'
+        })
+      }
+      setBurrows(list)
+      setLoading(false)
+    })
+    return () => unsubscribe()
+  }, [router])
+
   const handleLogout = async () => {
     await signOut(auth)
     router.push('/')
