@@ -108,16 +108,39 @@ export default function PageView() {
     setTimeout(() => setSaved(false), 2000)
   }
 
-  const handleComment = async () => {
-    if (!comment.trim()) return
-    const user = auth.currentUser
-    if (!user) return
-    const docRef = await addDoc(collection(db, 'burrows', burrowId, 'pages', pageId, 'comments'), {
-      text: comment, authorId: user.uid, authorName: myName, createdAt: new Date()
+const handleComment = async () => {
+  if (!comment.trim()) return
+  const user = auth.currentUser
+  if (!user) return
+  const docRef = await addDoc(collection(db, 'burrows', burrowId, 'pages', pageId, 'comments'), {
+    text: comment,
+    authorId: user.uid,
+    authorName: myName,
+    createdAt: new Date()
+  })
+  setComments([...comments, { id: docRef.id, text: comment, authorId: user.uid, authorName: myName, createdAt: new Date() }])
+  
+  // 相手に通知を送る
+  const burrowSnap = await getDoc(doc(db, 'burrows', burrowId))
+  const burrowData = burrowSnap.data()!
+  const partnerId = burrowData.members.find((m: string) => m !== user.uid)
+  const partnerSnap = await getDoc(doc(db, 'users', partnerId))
+  const partnerToken = partnerSnap.data()?.fcmToken
+  
+  if (partnerToken) {
+    await fetch('/api/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token: partnerToken,
+        title: `${myName}からの返信`,
+        body: comment
+      })
     })
-    setComments([...comments, { id: docRef.id, text: comment, authorId: user.uid, authorName: myName, createdAt: new Date() }])
-    setComment('')
   }
+  
+  setComment('')
+}
 
   if (!pageData) return <main style={{ minHeight: '100vh', background: '#C3C4D8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ color: '#A8A6B0' }}>読み込み中…</div></main>
 
