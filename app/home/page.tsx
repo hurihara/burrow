@@ -10,6 +10,8 @@ type Burrow = {
   id: string
   partnerId: string
   partnerName: string
+  partnerAvatar: string
+  partnerAvatarType: string
 }
 
 export default function HomePage() {
@@ -34,8 +36,14 @@ export default function HomePage() {
         const data = d.data()
         const partnerId = data.members.find((m: string) => m !== user.uid)
         const partnerSnap = await getDoc(doc(db, 'users', partnerId))
-        const partnerName = partnerSnap.exists() ? partnerSnap.data().name : '名無し'
-        list.push({ id: d.id, partnerId, partnerName })
+        const partnerData = partnerSnap.exists() ? partnerSnap.data() : {}
+        list.push({
+          id: d.id,
+          partnerId,
+          partnerName: partnerData.name || '名無し',
+          partnerAvatar: partnerData.avatar || partnerData.name?.[0] || '?',
+          partnerAvatarType: partnerData.avatarType || 'emoji'
+        })
       }
       setBurrows(list)
       setLoading(false)
@@ -83,8 +91,10 @@ export default function HomePage() {
             <div style={{ fontSize: '11px', color: '#A8A6B0', marginBottom: '8px' }}>つながってる人</div>
             {burrows.map(b => (
               <div key={b.id} onClick={() => router.push(`/burrow/${b.id}`)} style={{ background: '#FCFAEA', borderRadius: '12px', padding: '12px 14px', display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px', cursor: 'pointer' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#C3C4D8', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8A7DB3', fontWeight: 500, flexShrink: 0 }}>
-                  {b.partnerName[0]}
+                <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#C3C4D8', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', fontSize: b.partnerAvatarType === 'emoji' ? '22px' : '0' }}>
+                  {b.partnerAvatarType === 'image'
+                    ? <img src={b.partnerAvatar} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : b.partnerAvatar}
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: '14px', fontWeight: 500, color: '#7C7A86' }}>{b.partnerName}</div>
