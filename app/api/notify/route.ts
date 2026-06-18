@@ -24,11 +24,14 @@ export async function POST(req: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        message: {
-          token,
-          notification: { title, body },
-        },
-      }),
+  message: {
+    token,
+    data: {
+      title,
+      body,
+    },
+  },
+}),
     }
   )
 
