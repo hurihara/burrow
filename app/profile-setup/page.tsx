@@ -7,6 +7,7 @@ import { doc, setDoc } from 'firebase/firestore'
 
 const EMOJI_ICONS = ['🐱', '🐶', '🦊', '🐼', '🐨', '🐸', '🦋', '🌸', '🌙', '⭐', '🍀', '🎀', '🌈', '🍓', '🎮', '🎵']
 
+
 export default function ProfileSetup() {
   const [name, setName] = useState('')
   const [selectedEmoji, setSelectedEmoji] = useState('🐱')
