@@ -9,7 +9,7 @@ const firebaseConfig = {
   projectId: "burrow-90f6b",
   storageBucket: "burrow-90f6b.firebasestorage.app",
   messagingSenderId: "608885449270",
-  appId: "1:608855449270:web:cb31781a9180d518afae97"
+  appId: "1:608885449270:web:cb31781a9180d518afae97"
 };
 
 const app = initializeApp(firebaseConfig);
