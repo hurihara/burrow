@@ -23,12 +23,13 @@ export async function POST(req: NextRequest) {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-body: JSON.stringify({
-  message: {
-    token,
-    notification: { title, body },
-  },
-}),    }
+      body: JSON.stringify({
+        message: {
+          token,
+          data: { title, body },  // ← ここだけ変更
+        },
+      }),
+    }
   )
 
   const data = await res.json()
