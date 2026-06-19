@@ -12,9 +12,10 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// ← これを追加
+// バックグラウンド通知を自分でハンドル（重複防止）
 messaging.onBackgroundMessage((payload) => {
-  const { title, body } = payload.data;
+  // デフォルトの自動表示を上書きして1回だけ出す
+  const { title, body } = payload.notification;
   self.registration.showNotification(title, {
     body,
   });
